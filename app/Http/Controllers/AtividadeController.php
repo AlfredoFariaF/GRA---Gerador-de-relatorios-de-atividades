@@ -8,6 +8,6 @@ class AtividadeController extends Controller
 {
     public function index()
     {
-        return view('filmes.index');
+        return view('atividades.index');
     }
 }

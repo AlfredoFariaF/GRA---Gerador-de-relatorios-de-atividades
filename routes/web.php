@@ -2,4 +2,4 @@
 
 use App\Http\Controllers\AtividadeController;
 
-Route::get('/', [AtividadeController::class, 'index']);
+Route::get('/atividades', [AtividadeController::class, 'index']);
