@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->date('data');
             $table->time('inicio');
+            $table->time('fim');
             $table->string('usuario');
             $table->text('descricao');
             $table->text('solucao');
-            $table->date('fim');
             $table->timestamps();
         });
     }
