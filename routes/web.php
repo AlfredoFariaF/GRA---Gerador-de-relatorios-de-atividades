@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AtividadeController;
 
-Route::get('/atividades', [AtividadeController::class, 'index']);
+Route::view('/', 'dashboard')->name('dashboard');
+
+Route::resource('atividades', AtividadeController::class)
+    ->except(['show']);
