@@ -11,7 +11,7 @@
 <body>
 
     <aside class="sidebar">
-        <div class="brand">GRA</div>
+        <div class="brand">Gerador de relatorios de atividades</div>
 
         <nav class="menu">
             <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">

@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\Http\Controllers;
@@ -8,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\Settings;
 
 class RelatorioController extends Controller
 {
@@ -101,37 +101,47 @@ class RelatorioController extends Controller
 
             // Usuário requerente
             $tabela->addRow();
-            $tabela->addCell(10500, ['gridSpan' => 5])
-                ->addText([
-                    ['text' => 'Usuário Requerente: ', 'bold' => true],
-                    ['text' => $atividade->usuario],
-                ]);
 
-            // Descrição
-            $tabela->addRow();
-            $tabela->addCell(10500, ['gridSpan' => 5])
-                ->addText([
-                    ['text' => 'Descrição do Problema: ', 'bold' => true],
-                    ['text' => $atividade->descricao],
-                ]);
+            $celulaUsuario = $tabela->addCell(10500, ['gridSpan' => 5]);
+            $paragrafoUsuario = $celulaUsuario->addTextRun();
 
-            // Solução
+            $paragrafoUsuario->addText('Usuário Requerente: ', ['bold' => true]);
+            $paragrafoUsuario->addText($atividade->usuario);
+
+
+            // Descrição do problema
             $tabela->addRow();
-            $tabela->addCell(10500, ['gridSpan' => 5])
-                ->addText([
-                    ['text' => 'Solução Apresentada: ', 'bold' => true],
-                    ['text' => $atividade->solucao],
-                ]);
+
+            $celulaDescricao = $tabela->addCell(10500, ['gridSpan' => 5]);
+            $paragrafoDescricao = $celulaDescricao->addTextRun();
+
+            $paragrafoDescricao->addText('Descrição do Problema: ', ['bold' => true]);
+            $paragrafoDescricao->addText($atividade->descricao);
+
+
+            // Solução apresentada
+            $tabela->addRow();
+
+            $celulaSolucao = $tabela->addCell(10500, ['gridSpan' => 5]);
+            $paragrafoSolucao = $celulaSolucao->addTextRun();
+
+            $paragrafoSolucao->addText('Solução Apresentada: ', ['bold' => true]);
+            $paragrafoSolucao->addText($atividade->solucao);
+
 
             // Data e duração/horário
             $tabela->addRow();
-            $tabela->addCell(10500, ['gridSpan' => 5])
-                ->addText([
-                    ['text' => 'Data/Hora: ', 'bold' => true],
-                    ['text' => $data . ' | ' . substr($inicio, 0, 5)],
-                    ['text' => '     Duração/Horário: ', 'bold' => true],
-                    ['text' => substr($inicio, 0, 5) . '~' . substr($fim, 0, 5)],
-                ]);
+
+            $celulaHorario = $tabela->addCell(10500, ['gridSpan' => 5]);
+            $paragrafoHorario = $celulaHorario->addTextRun();
+
+            $paragrafoHorario->addText('Data/Hora: ', ['bold' => true]);
+            $paragrafoHorario->addText($data . ' | ' . substr($inicio, 0, 5));
+
+            $paragrafoHorario->addText('     Duração/Horário: ', ['bold' => true]);
+            $paragrafoHorario->addText(
+                substr($inicio, 0, 5) . '~' . substr($fim, 0, 5)
+            );
 
             $secao->addTextBreak(1);
         }
@@ -152,14 +162,34 @@ class RelatorioController extends Controller
         );
 
         // Geração do arquivo
+        // Nome do arquivo
         $nomeArquivo = 'Relatorio_Atividades_'
             . $mes->format('m_Y') . '.docx';
 
-        $caminho = storage_path('app/' . $nomeArquivo);
+        // Diretório temporário do PHPWord
+        $diretorioTemporario = storage_path('framework/cache');
 
+        if (!is_dir($diretorioTemporario)) {
+            mkdir($diretorioTemporario, 0755, true);
+        }
+
+        // Configura o diretório temporário utilizado pelo PHPWord
+        Settings::setTempDir($diretorioTemporario);
+
+        // Diretório de saída
+        $diretorioSaida = storage_path('app/temp');
+
+        if (!is_dir($diretorioSaida)) {
+            mkdir($diretorioSaida, 0755, true);
+        }
+
+        $caminho = $diretorioSaida . DIRECTORY_SEPARATOR . $nomeArquivo;
+
+        // Gera o documento
         $writer = IOFactory::createWriter($documento, 'Word2007');
         $writer->save($caminho);
 
+        // Download do documento
         return response()->download($caminho)->deleteFileAfterSend(true);
     }
 }
