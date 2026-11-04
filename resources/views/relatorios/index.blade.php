@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'Gerar relatório - GRA')
@@ -7,35 +6,29 @@
 
 @section('content')
 
-<div class="card">
+    <div class="card">
 
-    <h2>Relatório de atividades</h2>
+        <h2>Relatório de atividades</h2>
 
-    <p>
-        Selecione o mês e o ano para gerar o documento Word
-        com todas as atividades cadastradas no período.
-    </p>
+        <p>
+            Selecione o mês e o ano para gerar o documento Word
+            com todas as atividades cadastradas no período.
+        </p>
 
-    <form action="{{ route('relatorios.gerar') }}" method="GET">
+        <form action="{{ route('relatorios.gerar') }}" method="GET">
 
-        <div class="form-group">
-            <label for="mes">Mês do relatório:</label>
+            <div class="form-group">
+                <label for="mes">Mês do relatório:</label>
 
-            <input
-                type="month"
-                name="mes"
-                id="mes"
-                value="{{ old('mes', $mes) }}"
-                required
-            >
-        </div>
+                <input type="month" name="mes" id="mes" value="{{ old('mes', $mes) }}" required>
+            </div>
 
-        <button type="submit" class="btn btn-primary">
-            Gerar relatório DOCX
-        </button>
+            <button type="submit" class="btn btn-primary">
+                Gerar relatório DOCX
+            </button>
 
-    </form>
+        </form>
 
-</div>
+    </div>
 
 @endsection
