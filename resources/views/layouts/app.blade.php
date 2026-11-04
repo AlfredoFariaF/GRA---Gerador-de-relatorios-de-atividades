@@ -1,30 +1,30 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'GRA - Atividades')</title>
-    <link rel="stylesheet" href="./assets/css/estilo.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/estilo.css') }}">
 </head>
+
 <body>
 
     <aside class="sidebar">
         <div class="brand">GRA</div>
 
         <nav class="menu">
-            <a href="{{ route('dashboard') }}"
-               class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 Dashboard
             </a>
 
             <a href="{{ route('atividades.index') }}"
-               class="{{ request()->routeIs('atividades.index', 'atividades.edit') ? 'active' : '' }}">
+                class="{{ request()->routeIs('atividades.index', 'atividades.edit') ? 'active' : '' }}">
                 Atividades
             </a>
 
             <a href="{{ route('atividades.create') }}"
-               class="{{ request()->routeIs('atividades.create') ? 'active' : '' }}">
+                class="{{ request()->routeIs('atividades.create') ? 'active' : '' }}">
                 Cadastrar atividade
             </a>
         </nav>
@@ -57,4 +57,5 @@
     </main>
 
 </body>
+
 </html>
