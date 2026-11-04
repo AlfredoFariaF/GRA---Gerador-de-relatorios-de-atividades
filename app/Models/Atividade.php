@@ -19,8 +19,6 @@ class Atividade extends Model
     {
         return [
             'data' => 'date',
-            'inicio' => 'datetime:H:i',
-            'fim' => 'datetime:H:i',
         ];
     }
 }

@@ -6,9 +6,21 @@
 
 @section('content')
     <div class="card">
-        <a href="{{ route('atividades.create') }}" class="btn btn-primary">
-            + Cadastrar atividade
-        </a>
+        <form method="GET" action="{{ route('atividades.index') }}" class="filtro-mes">
+            <div>
+                <label for="mes">Filtrar por mês:</label>
+
+                <input type="month" id="mes" name="mes" value="{{ $mes }}">
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">
+                Filtrar
+            </button>
+
+            <a href="{{ route('atividades.index') }}" class="btn">
+                Mês atual
+            </a>
+        </form>
     </div>
 
     <div class="card">

@@ -2,18 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Atividade;
 use Illuminate\Http\Request;
 
 class AtividadeController extends Controller
 {
-    public function index()
+
+    public function dashboard()
     {
-        $atividades = Atividade::orderByDesc('data')
+        $atividades = Atividade::latest()
+            ->take(5)
+            ->get();
+
+        return view('dashboard', compact('atividades'));
+    }
+    public function index(Request $request)
+    {
+        // Valida o formato do mês recebido
+        $request->validate([
+            'mes' => ['nullable', 'date_format:Y-m'],
+        ]);
+
+        // Se nenhum mês for informado, utiliza o mês atual
+        $mes = $request->input('mes') ?: now()->format('Y-m');
+
+        // Calcula o primeiro e o último dia do mês selecionado
+        $inicioMes = Carbon::createFromFormat('Y-m-d', $mes . '-01');
+        $fimMes = $inicioMes->copy()->endOfMonth();
+
+        // Busca somente as atividades daquele mês
+        $atividades = Atividade::whereBetween('data', [
+            $inicioMes->toDateString(),
+            $fimMes->toDateString()
+        ])
+            ->orderByDesc('data')
             ->orderByDesc('inicio')
             ->get();
 
-        return view('atividades.index', compact('atividades'));
+        return view('atividades.index', compact('atividades', 'mes'));
     }
 
     public function create()
