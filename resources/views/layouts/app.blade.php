@@ -27,6 +27,10 @@
                 class="{{ request()->routeIs('atividades.create') ? 'active' : '' }}">
                 Cadastrar atividade
             </a>
+
+            <a href="{{ route('relatorios.index') }}" class="{{ request()->routeIs('relatorios.*') ? 'active' : '' }}">
+                Gerar relatório
+            </a>
         </nav>
     </aside>
 
